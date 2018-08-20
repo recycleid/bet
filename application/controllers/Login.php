@@ -37,35 +37,37 @@ class Login extends CI_Controller {
     $pwd = $this->input->post('password');
     $role = $this->input->post('userrole');
 
-    $data = "user";
-    if ($role == "Administrator") {
-      $data = "user_admin";
-    } else if ($role == "Agent") {
-      $data = "user_agent";
-    } else {
-      $data = "user";
-    }
-
-    $chk = $this->logindb->checklogin($data,$user,$pwd);
+    $chk = $this->logindb->checklogin($role,$user,$pwd);
 
     if (count($chk) > 0) {
-
-      if ($role == "Administrator") {
-        $t_id = "adminID";
-      } else if ($role == "Agent") {
-        $t_id = "agentID";
-      } else {
-        $t_id = "userID";
-      }
-
       $newdata = array(
-              'id'        => $chk[0][$t_id],
               'user'      => $chk[0]["username"],
               'name'      => $chk[0]["name"],
               'surname'   => $chk[0]["surname"],
-              'role'      => $role,
-              'logged_in' => TRUE
+              'telephone' => $chk[0]["telephone"],
+              'logged_in' => TRUE,
+              'role'      => $role
       );
+
+      $superadmin = false;
+
+      if ($role == "Administrator") {
+        $t_id = "adminID";
+        $expireDate = "2037-12-31";
+        if ($chk[0]["superadmin"] == 1) {
+          $superadmin = true;
+        }
+      } else if ($role == "Agent") {
+        $t_id = "agentID";
+        $expireDate = $chk[0]["expireDate"];
+      } else {
+        $t_id = "userID";
+        $expireDate = $chk[0]["expireDate"];
+      }
+
+      $newdata['id'] = $chk[0][$t_id];
+      $newdata['superadmin'] = $superadmin;
+      $newdata['expireDate'] = $expireDate;
 
       $this->session->set_userdata($newdata);
     } else {

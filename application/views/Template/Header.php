@@ -34,6 +34,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- Sweetalert Css -->
     <link href="<?=base_url();?>resource/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
+    <!-- Font awesome Css -->
+    <link href="<?=base_url();?>resource/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Select Css -->
+    <link href="<?=base_url();?>resource/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
+
     <!-- Custom Css -->
     <link href="<?=base_url();?>resource/css/style.css" rel="stylesheet">
 

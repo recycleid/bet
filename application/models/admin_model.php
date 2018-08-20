@@ -45,5 +45,36 @@ class admin_model extends CI_Model
 		$this->db->delete('user_admin');
 	}
 
+	public function dataagent()
+	{
+		$sql = "select * from user_agent";
+
+		return $this->db->query($sql)->result_array();
+	}
+
+	public function dataagent_byID($id)
+	{
+		$sql = "select * from user_agent where agentID = '$id'";
+
+		return $this->db->query($sql)->result_array();
+	}
+
+	public function agentForm_Insert($data)
+	{
+		$this->db->insert('user_agent', $data);
+	}
+
+	public function agentForm_Update($data,$id)
+	{
+		$this->db->where('agentID', $id);
+		$this->db->update('user_agent', $data);
+	}
+
+	public function agentForm_Delete($id)
+	{
+		$this->db->where('agentID', $id);
+		$this->db->delete('user_agent');
+	}
+
 
 }

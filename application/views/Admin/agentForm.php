@@ -2,8 +2,8 @@
 <section class="content">
 		<div class="container-fluid">
 				<ol class="breadcrumb breadcrumb-bg-pink">
-						<li><a href="<?=base_url();?>admin/manageadmin">ผู้จัดการระบบ</a></li>
-						<li class="active"><a href="javascript:void(0);">ฟอร์มผู้จัดการระบบ</a></li>
+						<li><a href="<?=base_url();?>admin/manageagent">จัดการ Agent</a></li>
+						<li class="active"><a href="javascript:void(0);">ฟอร์ม Agent</a></li>
 				</ol>
 
 
@@ -13,7 +13,7 @@
 								<div class="card">
 										<div class="header">
 												<h2>
-														ฟอร์มผู้จัดการระบบ
+														ฟอร์ม Agent
 												</h2>
 
 
@@ -29,7 +29,7 @@
 															<div class="input-group">
 																	<span class="input-group-addon">รหัส</span>
 																	<div class="form-line disabled">
-																			<input type="text" id="txtid" name="txtid" class="form-control" placeholder="ID" disabled value="<?php if (count($adminData) > 0) { echo $adminData[0]["adminID"]; } ?>">
+																			<input type="text" id="txtid" name="txtid" class="form-control" placeholder="ID" disabled value="<?php if (count($agentData) > 0) { echo $agentData[0]["agentID"]; } ?>">
 																	</div>
 
 															</div>
@@ -37,7 +37,7 @@
 															<div class="input-group">
 																	<span class="input-group-addon">ชื่อ</span>
 																	<div class="form-line">
-																			<input type="text" id="txtname" name="txtname" class="form-control" placeholder="ชื่อ" value="<?php if (count($adminData) > 0) { echo $adminData[0]["name"]; } ?>">
+																			<input type="text" id="txtname" name="txtname" class="form-control" placeholder="ชื่อ" value="<?php if (count($agentData) > 0) { echo $agentData[0]["name"]; } ?>">
 																	</div>
 																	<span class="input-group-addon" id="txtname_validate" style="color:red;">กรุณากรอกชื่อ</span>
 															</div>
@@ -45,7 +45,7 @@
 															<div class="input-group">
 																	<span class="input-group-addon">นามสกุล</span>
 																	<div class="form-line">
-																			<input type="text" id="txtsurname" name="txtsurname" class="form-control" placeholder="นามสกุล" value="<?php if (count($adminData) > 0) { echo $adminData[0]["surname"]; } ?>">
+																			<input type="text" id="txtsurname" name="txtsurname" class="form-control" placeholder="นามสกุล" value="<?php if (count($agentData) > 0) { echo $agentData[0]["surname"]; } ?>">
 																	</div>
 																	<span class="input-group-addon" id="txtsurname_validate" style="color:red;">กรุณากรอกนามสกุล</span>
 															</div>
@@ -53,7 +53,7 @@
 															<div class="input-group">
 																	<span class="input-group-addon">เบอร์โทรศัพท์</span>
 																	<div class="form-line">
-																			<input type="text" id="txttel" name="txttel" class="form-control" placeholder="เบอร์โทรศัพท์" value="<?php if (count($adminData) > 0) { echo $adminData[0]["telephone"]; } ?>">
+																			<input type="text" id="txttel" name="txttel" class="form-control" placeholder="เบอร์โทรศัพท์" value="<?php if (count($agentData) > 0) { echo $agentData[0]["telephone"]; } ?>">
 																	</div>
 																	<span class="input-group-addon" id="txttel_validate" style="color:red;">กรุณากรอกเบอร์โทรศัพท์</span>
 															</div>
@@ -61,7 +61,7 @@
 															<div class="input-group">
 																	<span class="input-group-addon">Username</span>
 																	<div class="form-line">
-																			<input type="text" id="txtusername" name="txtusername" class="form-control" placeholder="Username" value="<?php if (count($adminData) > 0) { echo $adminData[0]["username"]; } ?>">
+																			<input type="text" id="txtusername" name="txtusername" class="form-control" placeholder="Username" value="<?php if (count($agentData) > 0) { echo $agentData[0]["username"]; } ?>">
 																	</div>
 																	<span class="input-group-addon" id="txtusername_validate" style="color:red;">กรุณากรอก Username</span>
 															</div>
@@ -69,7 +69,7 @@
 															<div class="input-group">
 																	<span class="input-group-addon">Password</span>
 																	<div class="form-line">
-																			<input type="password" id="txtpassword" name="txtpassword" class="form-control" placeholder="Password" value="<?php if (count($adminData) > 0) { echo $adminData[0]["password"]; } ?>">
+																			<input type="password" id="txtpassword" name="txtpassword" class="form-control" placeholder="Password" value="<?php if (count($agentData) > 0) { echo $agentData[0]["password"]; } ?>">
 																	</div>
 																	<span class="input-group-addon" id="txtpassword_validate" style="color:red;">กรุณากรอก Password</span>
 															</div>
@@ -77,15 +77,9 @@
 															<div class="input-group">
 																	<span class="input-group-addon">Re-Password</span>
 																	<div class="form-line">
-																			<input type="password" id="txtrepassword" name="txtrepassword" class="form-control" placeholder="Re-Password" value="<?php if (count($adminData) > 0) { echo $adminData[0]["password"]; } ?>">
+																			<input type="password" id="txtrepassword" name="txtrepassword" class="form-control" placeholder="Re-Password" value="<?php if (count($agentData) > 0) { echo $agentData[0]["password"]; } ?>">
 																	</div>
 																	<span class="input-group-addon" id="txtrepassword_validate" style="color:red;">กรุณากรอก Re-Password</span>
-															</div>
-
-															<div class="input-group">
-																	<span class="input-group-addon">SuperAdmin</span>
-																		<input type="checkbox" id="chkSuperadmin" name="chkSuperadmin" class="filled-in chk-col-green" <?php if (count($adminData) > 0) { if ($adminData[0]["superadmin"] == 1) { echo "checked";  } } ?> >
-																		<label for="chkSuperadmin"></label>
 															</div>
 
 															<hr>
@@ -177,25 +171,19 @@
 			return false;
 		}
 
-		var superadmin = 0;
-		if ($('#chkSuperadmin').prop('checked') == true) {
-			superadmin = 1;
-		}
-
 
 		var formData = {
-			adminID: $("#txtid").val(),
+			agentID: $("#txtid").val(),
 			username: $("#txtusername").val(),
 			password: $("#txtpassword").val(),
 			name: $("#txtname").val(),
 			surname: $("#txtsurname").val(),
-			telephone: $("#txttel").val(),
-			superadmin: superadmin
+			telephone: $("#txttel").val()
 		};
 
 		$('.page-loader-wrapper').fadeIn();
 		var request = $.ajax({
-		  url: "<?=base_url();?>admin/adminFormSave",
+		  url: "<?=base_url();?>admin/agentFormSave",
 		  method: "POST",
 		  data: formData,
 		  dataType: "html"
@@ -204,7 +192,7 @@
 		request.done(function( result ) {
 			setTimeout(function () {
 				$('.page-loader-wrapper').fadeOut();
-				window.location = "<?=base_url();?>admin/manageadmin";
+				window.location = "<?=base_url();?>admin/manageagent";
 			}, 50);
 		});
 

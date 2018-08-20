@@ -84,7 +84,8 @@ class Admin extends CI_Controller {
   			'password' => $this->input->post('password'),
   			'name' => $this->input->post('name'),
   			'surname' => $this->input->post('surname'),
-  			'telephone' => $this->input->post('telephone')
+  			'telephone' => $this->input->post('telephone'),
+        'superadmin' => $this->input->post('superadmin')
 		);
 
     if ($id == "") {
@@ -123,6 +124,94 @@ class Admin extends CI_Controller {
     $this->admindb->adminForm_Update($data,$id);
     return "OK";
   }
+
+  public function manageagent()
+	{
+
+		$menu = array(
+	    'menu' => 'จัดการ Agent',
+      'userData' => $this->session->userdata()
+		);
+
+    $data = array(
+      'agentData' => $this->admindb->dataagent()
+    );
+
+		$this->load->view('Template/Header');
+		$this->load->view('Template/Menu', $menu);
+		$this->load->view('Admin/manageagent', $data);
+		$this->load->view('Template/Footer');
+	}
+
+  public function agentForm($id = "")
+	{
+    $menu = array(
+	    'menu' => 'จัดการ Agent',
+      'userData' => $this->session->userdata()
+		);
+
+    $data = array(
+      'agentData' => $this->admindb->dataagent_byID($id)
+    );
+
+		$this->load->view('Template/Header');
+		$this->load->view('Template/Menu', $menu);
+		$this->load->view('Admin/agentForm', $data);
+		$this->load->view('Template/Footer');
+	}
+
+  public function agentFormSave()
+	{
+
+    $id = $this->input->post('agentID');
+
+    $data = array(
+  			'username' => $this->input->post('username'),
+  			'password' => $this->input->post('password'),
+  			'name' => $this->input->post('name'),
+  			'surname' => $this->input->post('surname'),
+  			'telephone' => $this->input->post('telephone')
+		);
+
+    if ($id == "") {
+      $data["createDate"] = date("Y-m-d");
+      $data["expireDate"] = date("Y-m-d", strtotime("+ 30 day"));
+      $this->admindb->agentForm_Insert($data);
+    } else {
+      $this->admindb->agentForm_Update($data,$id);
+    }
+
+    return "OK";
+
+  }
+
+  public function agentFormDelete()
+  {
+    $id = $this->input->post('agentID');
+    $this->admindb->agentForm_Delete($id);
+    return "OK";
+  }
+
+  public function agentFormActive()
+  {
+    $id = $this->input->post('agentID');
+    $data = array(
+  			'active' => 1
+		);
+    $this->admindb->agentForm_Update($data,$id);
+    return "OK";
+  }
+
+  public function agentFormDeActive()
+  {
+    $id = $this->input->post('agentID');
+    $data = array(
+  			'active' => 0
+		);
+    $this->admindb->agentForm_Update($data,$id);
+    return "OK";
+  }
+
 
 
 

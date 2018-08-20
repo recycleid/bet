@@ -2,7 +2,7 @@
 <section class="content">
 		<div class="container-fluid">
 				<ol class="breadcrumb breadcrumb-bg-pink">
-						<li class="active"><a href="javascript:void(0);">ผู้จัดการระบบ</a></li>
+						<li class="active"><a href="javascript:void(0);">จัดการ Agent</a></li>
 				</ol>
 
 
@@ -12,10 +12,10 @@
 								<div class="card">
 										<div class="header">
 												<h2>
-														ข้อมูลผู้จัดการระบบ
+														ข้อมูล Agent
 
 														<div class="pull-right">
-															<a href="<?=base_url();?>admin/adminForm"><button type="button" class="btn btn-primary btn-lg waves-effect">สร้างผู้จัดการระบบ</button></a>
+															<a href="<?=base_url();?>admin/agentForm"><button type="button" class="btn btn-primary btn-lg waves-effect">สร้าง Agent</button></a>
 														</div>
 												</h2>
 
@@ -28,7 +28,7 @@
 
 										<div class="body">
 												<div class="table-responsive">
-														<table class="table table-bordered table-striped table-hover dataTable" id="adminData">
+														<table class="table table-bordered table-striped table-hover dataTable" id="agentData">
 																<thead>
 																		<tr>
 																				<th>รหัส</th>
@@ -37,40 +37,36 @@
 																				<th>name</th>
 																				<th>surname</th>
 																				<th>telephone</th>
-																				<th>Superadmin</th>
+																				<th>วันที่สร้าง</th>
+																				<th>วันหมดอายุ</th>
 																				<th></th>
 																		</tr>
 																</thead>
 																<tbody>
-																	<?php for ($i=0; $i<count($adminData); $i++) { ?>
+																	<?php for ($i=0; $i<count($agentData); $i++) { ?>
 																		<tr>
-																				<td><?=$adminData[$i]["adminID"];?></td>
-																				<td><?=$adminData[$i]["username"];?></td>
-																				<td><?=$adminData[$i]["password"];?></td>
-																				<td><?=$adminData[$i]["name"];?></td>
-																				<td><?=$adminData[$i]["surname"];?></td>
-																				<td><?=$adminData[$i]["telephone"];?></td>
-																				<td align="center">
-																					<?php
-																					if ($adminData[$i]["superadmin"] == "1") {
-																						echo '<i class="fa fa-check-circle" style="font-size:20px;color:green;"></i>';
-																					}
-																					?>
-																				</td>
+																				<td><?=$agentData[$i]["agentID"];?></td>
+																				<td><?=$agentData[$i]["username"];?></td>
+																				<td><?=$agentData[$i]["password"];?></td>
+																				<td><?=$agentData[$i]["name"];?></td>
+																				<td><?=$agentData[$i]["surname"];?></td>
+																				<td><?=$agentData[$i]["telephone"];?></td>
+																				<td><?=$agentData[$i]["createDate"];?></td>
+																				<td><?=$agentData[$i]["expireDate"];?></td>
 																				<td align="right">
 																					<?php
-																						if ($adminData[$i]["active"] == 1) {
+																						if ($agentData[$i]["active"] == 1) {
 																					?>
-																							<button type="button" class="btn bg-pink waves-effect btn-xs" onclick="deactive(<?=$adminData[$i]["adminID"];?>)">ปิดการใช้งาน</button>
+																							<button type="button" class="btn bg-pink waves-effect btn-xs" onclick="deactive(<?=$agentData[$i]["agentID"];?>)">ปิดการใช้งาน</button>
 																					<?php
 																						} else {
 																					?>
-																							<button type="button" class="btn btn-info waves-effect btn-xs" onclick="active(<?=$adminData[$i]["adminID"];?>)">เปิดการใช้งาน</button>
+																							<button type="button" class="btn btn-info waves-effect btn-xs" onclick="active(<?=$agentData[$i]["agentID"];?>)">เปิดการใช้งาน</button>
 																					<?php
 																						}
 																					?>
-																					<button type="button" class="btn btn-warning waves-effect btn-xs" onclick="edit(<?=$adminData[$i]["adminID"];?>);">แก้ไข</button>
-																					<button type="button" class="btn btn-danger waves-effect btn-xs" onclick="delid(<?=$adminData[$i]["adminID"];?>);">ลบ</button>
+																					<button type="button" class="btn btn-warning waves-effect btn-xs" onclick="edit(<?=$agentData[$i]["agentID"];?>);">แก้ไข</button>
+																					<button type="button" class="btn btn-danger waves-effect btn-xs" onclick="delid(<?=$agentData[$i]["agentID"];?>);">ลบ</button>
 																				</td>
 																		</tr>
 																	<?php } ?>
@@ -89,10 +85,10 @@
 
 <script type="text/javascript">
 	$( document ).ready(function() {
-			$('#adminData').DataTable({
+			$('#agentData').DataTable({
 					responsive: true,
 					"columnDefs": [ {
-					"targets": [6],
+					"targets": [7],
 					"orderable": false
 					} ]
 			});
@@ -100,7 +96,7 @@
 
 	function edit(id)
 	{
-		window.location = "<?=base_url();?>admin/adminForm/"+id;
+		window.location = "<?=base_url();?>admin/agentForm/"+id;
 	}
 
 	function delid(id)
@@ -117,12 +113,12 @@
 					closeOnConfirm: false
 			}, function () {
 					var formData = {
-						adminID: id
+						agentID: id
 					};
 
 					$('.page-loader-wrapper').fadeIn();
 					var request = $.ajax({
-						url: "<?=base_url();?>admin/adminFormDelete",
+						url: "<?=base_url();?>admin/agentFormDelete",
 						method: "POST",
 						data: formData,
 						dataType: "html"
@@ -132,7 +128,7 @@
 						$('.page-loader-wrapper').fadeOut();
 						swal("ลบเรียบร้อย!", "ข้อมูลถูกลบโดยสมบูรณ์.", "success");
 						setTimeout(function () {
-		            window.location = "<?=base_url();?>admin/manageadmin";
+		            window.location = "<?=base_url();?>admin/manageagent";
 		        }, 2000);
 
 					});
@@ -149,12 +145,12 @@
 	function active(id)
 	{
 		var formData = {
-			adminID: id
+			agentID: id
 		};
 
 		$('.page-loader-wrapper').fadeIn();
 		var request = $.ajax({
-			url: "<?=base_url();?>admin/adminFormActive",
+			url: "<?=base_url();?>admin/agentFormActive",
 			method: "POST",
 			data: formData,
 			dataType: "html"
@@ -163,7 +159,7 @@
 		request.done(function( result ) {
 			setTimeout(function () {
 					$('.page-loader-wrapper').fadeOut();
-					window.location = "<?=base_url();?>admin/manageadmin";
+					window.location = "<?=base_url();?>admin/manageagent";
 			}, 50);
 		});
 
@@ -175,12 +171,12 @@
 	function deactive(id)
 	{
 		var formData = {
-			adminID: id
+			agentID: id
 		};
 
 		$('.page-loader-wrapper').fadeIn();
 		var request = $.ajax({
-			url: "<?=base_url();?>admin/adminFormDeActive",
+			url: "<?=base_url();?>admin/agentFormDeActive",
 			method: "POST",
 			data: formData,
 			dataType: "html"
@@ -189,7 +185,7 @@
 		request.done(function( result ) {
 			setTimeout(function () {
 					$('.page-loader-wrapper').fadeOut();
-					window.location = "<?=base_url();?>admin/manageadmin";
+					window.location = "<?=base_url();?>admin/manageagent";
 			}, 50);
 		});
 
