@@ -54,13 +54,14 @@
 
 										<div class="body">
 											<div class="row clearfix">
-												<form id="frmsubscription" name="subscription" action="<?=base_url();?>agent/saveSubsciption"  method="post" enctype="multipart/form-data">
+												<form id="frmsubscription" name="subscription" method="post" enctype="multipart/form-data">
 												<div class="col-md-12">
 													<div class="input-group">
 															<span class="input-group-addon">เบอร์ติดต่อ</span>
 															<div class="form-line">
 																	<input type="text" id="txttel" name="txttel" class="form-control" placeholder="เบอร์ติดต่อ" value="<?=$userData["telephone"];?>" >
 															</div>
+															<span class="input-group-addon" id="txttel_validate" style="color:red;">กรุกรุณากรอกเบอร์โทรศัพท์</span>
 													</div>
 
 													<div class="input-group">
@@ -89,6 +90,7 @@
 															<div class="form-line">
 																	<input type="file" id="txtslip" name="txtslip" class="form-control"  accept="image/x-png,image/gif,image/jpeg"  >
 															</div>
+															<span class="input-group-addon" id="txtslip_validate" style="color:red;">กรุณาอัพโหลด Slip</span>
 
 													</div>
 
@@ -99,7 +101,7 @@
 												<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8"></div>
 
 												<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-													<button type="submit" class="btn bg-blue btn-block btn-lg waves-effect">ต่ออายุ</button>
+													<button type="button" class="btn bg-blue btn-block btn-lg waves-effect" onclick="save();">ต่ออายุ</button>
 												</div>
 
 
@@ -110,6 +112,7 @@
 						</div>
 				</div>
 
+				<div id="testpix"></div>
 		</div>
 </section>
 
@@ -126,29 +129,13 @@
 
 	function hide_allvalidate()
 	{
-		$("#txtname_validate").hide();
-		$("#txtsurname_validate").hide();
 		$("#txttel_validate").hide();
-		$("#txtusername_validate").hide();
-		$("#txtpassword_validate").hide();
-		$("#txtrepassword_validate").hide();
+		$("#txtslip_validate").hide();
 	}
 
 	function save()
 	{
 		var validate = 0;
-
-		$("#txtname_validate").hide();
-		if ($("#txtname").val() == "") {
-			$("#txtname_validate").show();
-			validate = 1;
-		}
-
-		$("#txtsurname_validate").hide();
-		if ($("#txtsurname").val() == "") {
-			$("#txtsurname_validate").show();
-			validate = 1;
-		}
 
 		$("#txttel_validate").hide();
 		if ($("#txttel").val() == "") {
@@ -156,31 +143,11 @@
 			validate = 1;
 		}
 
-		$("#txtusername_validate").hide();
-		if ($("#txtusername").val() == "") {
-			$("#txtusername_validate").show();
+		$("#txtslip_validate").hide();
+		if ($("#txtslip").val() == "") {
+			$("#txtslip_validate").show();
 			validate = 1;
 		}
-
-		$("#txtpassword_validate").hide();
-		if ($("#txtpassword").val() == "") {
-			$("#txtpassword_validate").show();
-			validate = 1;
-		}
-
-		$("#txtrepassword_validate").hide();
-		if ($("#txtrepassword").val() == "") {
-			$("#txtrepassword_validate").show();
-			validate = 1;
-		}
-
-		$("#txtrepassword_validate").html("กรุณากรอก Re-Password");
-		if ($("#txtrepassword").val() != $("#txtpassword").val()) {
-			$("#txtrepassword_validate").html("กรุณากรอก Password ให้ตรงกัน");
-			$("#txtrepassword_validate").show();
-			validate = 1;
-		}
-
 
 
 		if (validate == 1) {
@@ -188,28 +155,28 @@
 		}
 
 
-		var formData = {
-			userID: $("#txtid").val(),
-			agentID: <?=$agentID;?>,
-			username: $("#txtusername").val(),
-			password: $("#txtpassword").val(),
-			name: $("#txtname").val(),
-			surname: $("#txtsurname").val(),
-			telephone: $("#txttel").val()
-		};
+		var formData = new FormData();
+		formData.append('agentID', <?=$this->session->userdata("id");?>);
+		formData.append('days', $("seldays").html());
+		formData.append('rate', $("txtrate").val());
+		formData.append('slip', $('#txtslip')[0].files[0]);
 
 		$('.page-loader-wrapper').fadeIn();
 		var request = $.ajax({
-		  url: "<?=base_url();?>agent/userFormSave",
+		  url: "<?=base_url();?>agent/saveSubsciption",
 		  method: "POST",
 		  data: formData,
-		  dataType: "html"
+			processData: false,
+      contentType: false,
+      cache: false,
+		  dataType: "html",
+			enctype: "multipart/form-data"
 		});
 
 		request.done(function( result ) {
 			setTimeout(function () {
 				$('.page-loader-wrapper').fadeOut();
-				window.location = "<?=base_url();?>agent/manageuser";
+				//window.location = "<?=base_url();?>agent/subscription";
 			}, 50);
 		});
 

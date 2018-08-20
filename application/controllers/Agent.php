@@ -144,5 +144,13 @@ class Agent extends CI_Controller {
 		$this->load->view('Template/Footer');
 	}
 
+  public function saveSubsciption()
+  {
+    $id = $this->input->post('agentID');
+    $slip = $this->input->post('slip');
+
+    echo $slip;
+  }
+
 
 }
