@@ -52,5 +52,17 @@ class agent_model extends CI_Model
 		return $this->db->query($sql)->result_array();
 	}
 
+	public function subscripData()
+	{
+		$sql = "select * from subscription order by createDate Desc";
+
+		return $this->db->query($sql)->result_array();
+	}
+
+	public function subscription_Insert($data)
+	{
+		$this->db->insert('subscription', $data);
+	}
+
 
 }

@@ -8,7 +8,7 @@
 
 				<!-- Basic Examples -->
 				<div class="row clearfix">
-						<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 								<div class="card">
 										<div class="header">
 												<h2>
@@ -24,7 +24,7 @@
 												<table class="table">
 													<thead>
 														<th><center>จำนวนวัน</center></th>
-														<th><center>ราคา</center></th>
+														<th><center>ราคา (บาท)</center></th>
 													</thead>
 
 													<tbody>
@@ -41,7 +41,7 @@
 								</div>
 						</div>
 
-						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 								<div class="card">
 										<div class="header">
 												<h2>
@@ -67,7 +67,7 @@
 													<div class="input-group">
 															<span class="input-group-addon">จำนวนวัน</span>
 
-																<select class="form-control show-tick" id="seldays" name="seldays">
+																<select class="form-control show-tick" id="seldays" name="seldays" onchange="changepricerate(this.value);">
 																	<?php for($i=0; $i<count($rate); $i++) { ?>
 																		<option value="<?=$rate[$i]['rate'];?>"><?=$rate[$i]["days"];?></option>
 																	<?php } ?>
@@ -90,7 +90,7 @@
 															<div class="form-line">
 																	<input type="file" id="txtslip" name="txtslip" class="form-control"  accept="image/x-png,image/gif,image/jpeg"  >
 															</div>
-															<span class="input-group-addon" id="txtslip_validate" style="color:red;">กรุณาอัพโหลด Slip</span>
+															<span class="input-group-addon" id="txtslip_validate" style="color:red;">กรุณาอัพโหลดสลิป</span>
 
 													</div>
 
@@ -106,6 +106,65 @@
 
 
 												</form>
+											</div>
+										</div>
+								</div>
+						</div>
+
+						<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+								<div class="card">
+										<div class="header">
+												<h2>
+														ประวัติการต่อสมาชิก
+												</h2>
+												<div class="clearfix"></div>
+
+										</div>
+
+
+										<div class="body">
+											<div class="row clearfix">
+												<table class="table table-bordered table-striped table-hover">
+													<thead>
+														<tr>
+															<th>วันที่ทำรายการ</th>
+															<th>จำนวนวัน</th>
+															<th>จำนวนเงิน</th>
+															<th>สลิป</th>
+															<th>สถานะ</th>
+														</tr>
+													</thead>
+
+													<tbody>
+														<?php
+															for ($i=0; $i<count($ssData); $i++) {
+																$status = "-";
+																$trColor = "";
+																if ($ssData[$i]["status"] == "0") {
+																	$status = "ยกเลิกรายการ";
+																	$trColor = "bg-red";
+																} else if ($ssData[$i]["status"] == "1") {
+																	$status = "รอการยืนยัน";
+																	$trColor = "bg-teal";
+																} else if ($ssData[$i]["status"] == "2") {
+																	$status = "ต่ออายุเรียบร้อย";
+																	$trColor = "bg-cyan";
+																} else {
+																	$status = "-";
+																}
+														?>
+															<tr class="<?=$trColor;?>">
+																<td><?=date("d M Y H:i:s",strtotime($ssData[$i]["createDate"]));?></td>
+																<td><?=$ssData[$i]["days"];?></td>
+																<td><?=Number_format($ssData[$i]["rate"]);?></td>
+																<td><a href="javascript:void(0)" onclick="seeSlip('<?=date("d M Y H:i:s",strtotime($ssData[$i]["createDate"]));?>','<?=$ssData[$i]["slip"];?>')"><i class="material-icons">description</i></a></td>
+																<td><?=$status;?></td>
+															</tr>
+														<?php
+															}
+														?>
+													</tbody>
+												</table>
 											</div>
 										</div>
 								</div>
@@ -157,8 +216,9 @@
 
 		var formData = new FormData();
 		formData.append('agentID', <?=$this->session->userdata("id");?>);
-		formData.append('days', $("seldays").html());
-		formData.append('rate', $("txtrate").val());
+		formData.append('days', $("#seldays option:selected").text());
+		formData.append('rate', $("#seldays").val());
+		formData.append('telephone', $("#txttel").val());
 		formData.append('slip', $('#txtslip')[0].files[0]);
 
 		$('.page-loader-wrapper').fadeIn();
@@ -176,7 +236,12 @@
 		request.done(function( result ) {
 			setTimeout(function () {
 				$('.page-loader-wrapper').fadeOut();
-				//window.location = "<?=base_url();?>agent/subscription";
+				if (result == "ok") {
+					window.location = "<?=base_url();?>agent/subscription";
+				} else {
+					showNotification("alert-danger", "ไม่สามารถบันทึกได้นะ !!", "bottom", "right", "", "");
+				}
+
 			}, 50);
 		});
 
@@ -222,5 +287,19 @@
 	            '<a href="{3}" target="{4}" data-notify="url"></a>' +
 	            '</div>'
 	        });
+	}
+
+	function changepricerate(rate)
+	{
+		$("#txtrate").val(rate.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+	}
+
+	function seeSlip(title,image)
+	{
+		swal({
+        title: "",
+        text: "<img src='<?=base_url();?>"+image+"'>",
+				html: true
+    });
 	}
 </script>

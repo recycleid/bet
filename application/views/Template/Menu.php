@@ -143,6 +143,13 @@
 											</a>
 									</li>
 
+									<li <?php if($menu == "ต่ออายุ Agent") { echo "class='active'"; } ?>>
+											<a href="<?=base_url();?>admin/managesubscript">
+													<i class="material-icons">trending_up</i>
+													<span>ต่ออายุ Agent</span>
+											</a>
+									</li>
+
 									<?php
 									}
 									?>

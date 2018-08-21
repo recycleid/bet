@@ -41,7 +41,6 @@ class Agent extends CI_Controller {
 
 	public function manageuser()
 	{
-
 		$menu = array(
 	    'menu' => 'จัดการ User',
       'userData' => $this->session->userdata()
@@ -135,7 +134,8 @@ class Agent extends CI_Controller {
 		);
 
     $data = array(
-      'rate' => $this->agentdb->subscriprate()
+      'rate' => $this->agentdb->subscriprate(),
+      'ssData' => $this->agentdb->subscripData()
     );
 
 		$this->load->view('Template/Header');
@@ -146,10 +146,30 @@ class Agent extends CI_Controller {
 
   public function saveSubsciption()
   {
-    $id = $this->input->post('agentID');
-    $slip = $this->input->post('slip');
+    $agentID = $this->input->post('agentID');
+    $data = array(
+      'agentID' => $agentID,
+      'telephone' => $this->input->post('telephone'),
+      'days' => $this->input->post('days'),
+      'rate' => $this->input->post('rate'),
+      'createDate' => date("Y-m-d H:i:s")
+    );
 
-    echo $slip;
+    $slip = $_FILES["slip"]["name"];
+
+    $target_dir = "resource/transactionImage/subscription/";
+    $imageFileType = strtolower(pathinfo($_FILES["slip"]["name"],PATHINFO_EXTENSION));
+    $target_file = $target_dir . $agentID.date("YmdHis").".".$imageFileType;
+    $target_fullfile = FCPATH.$target_file;
+    $uploadOk = 1;
+
+    if (move_uploaded_file($_FILES["slip"]["tmp_name"], $target_fullfile)) {
+        $data["slip"] = $target_file;
+        $this->agentdb->subscription_Insert($data);
+        echo "ok";
+    } else {
+        echo "no";
+    }
   }
 
 

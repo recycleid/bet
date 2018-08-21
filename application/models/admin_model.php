@@ -76,5 +76,32 @@ class admin_model extends CI_Model
 		$this->db->delete('user_agent');
 	}
 
+	public function subscription_Data()
+	{
+		$sql = "select subscription.* ,user_agent.name, user_agent.surname
+from subscription
+left join user_agent on  subscription.agentID = user_agent.agentID
+order by subscription.createDate";
+
+		return $this->db->query($sql)->result_array();
+	}
+
+	public function subscription_GetByID($id)
+	{
+		$sql = "select subscription.* ,user_agent.name, user_agent.surname, user_agent.expireDate
+from subscription
+left join user_agent on  subscription.agentID = user_agent.agentID
+where subscriptionID = '$id'
+order by subscription.createDate";
+
+		return $this->db->query($sql)->result_array();
+	}
+
+	public function subscription_Update($data,$id)
+	{
+		$this->db->where('subscriptionID', $id);
+		$this->db->update('subscription', $data);
+	}
+
 
 }

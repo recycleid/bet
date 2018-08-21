@@ -213,6 +213,68 @@ class Admin extends CI_Controller {
   }
 
 
+    public function managesubscript()
+    {
+      $menu = array(
+  	    'menu' => 'ต่ออายุ Agent',
+        'userData' => $this->session->userdata()
+  		);
+
+      $data = array(
+        "ssData" => $this->admindb->subscription_Data()
+      );
+
+  		$this->load->view('Template/Header');
+  		$this->load->view('Template/Menu', $menu);
+  		$this->load->view('Admin/managesubscript', $data);
+  		$this->load->view('Template/Footer');
+    }
+
+    public function renewSubscription()
+    {
+      $id = $this->input->post('subscriptionID');
+      $ss = $this->admindb->subscription_GetByID($id);
+
+      $days = $ss[0]["days"];
+      $expireDate = $ss[0]["expireDate"];
+      $agentID = $ss[0]["agentID"];
+
+      if (date("Y-m-d") > $expireDate) {
+        $newExpireDate = date("Y-m-d", strtotime("+ ".$days." day"));
+      } else {
+        $newExpireDate = date("Y-m-d", strtotime($expireDate." + ".$days." day"));
+      }
+
+      $data = array(
+        "statusBy" => $this->session->userdata("id"),
+        "statusDate" => date("Y-m-d H:i:s"),
+        "status" => "2"
+      );
+
+      $agentData = array(
+        "expireDate" => $newExpireDate
+      );
+
+      $this->admindb->subscription_Update($data,$id);
+      $this->admindb->agentForm_Update($agentData,$agentID);
+
+    }
+
+    public function cancelSubscription()
+    {
+      $id = $this->input->post('subscriptionID');
+
+      $data = array(
+        "statusBy" => $this->session->userdata("id"),
+        "statusDate" => date("Y-m-d H:i:s"),
+        "status" => "0"
+      );
+
+      $this->admindb->subscription_Update($data,$id);
+
+    }
+
+
 
 
 }
