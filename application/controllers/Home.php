@@ -55,4 +55,7 @@ class Home extends CI_Controller {
 		$this->load->view('Home/ballresult');
 		$this->load->view('Template/Footer');
 	}
+
+
+
 }
